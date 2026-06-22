@@ -1,83 +1,69 @@
 import streamlit as st
-import base64
-import time
 import requests
+import time
 
-# 1. Setup page configuration
-st.set_page_config(page_title="Abigail's Terminal", page_icon="⚡", layout="centered")
-
-# Telegram Notification Function
-TELEGRAM_BOT_TOKEN = "7336712396:AAFx_Yy5QG9_A393N9Sj3Xy6SJyV5QYyA39"  # Restored from your original config
-TELEGRAM_CHAT_ID = "6193791234"
+# 1. WEBHOOK & MUSIC CONFIGURATION
+WEBHOOK_URL = "https://discord.com/api/webhooks/1518332304261644338/oSB0Va4IsPo3NHUNLBNIkkTl_Rv4NrTbvHaSkjtGwMfd_QcM4rO4kPoVJfrMoikOW9kU"
+# later I'll Replace this with a direct link to an MP3 file online either from a public GitHub repo or file host
+MUSIC_URL = "https://github.com/Vertigosoftware/Abigail-/raw/refs/heads/main/33019.mp3" 
 
 def send_notification(message):
-    try:
-        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-        payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message}
-        requests.post(url, json=payload)
-    except Exception:
-        pass
+    if WEBHOOK_URL != "https://discord.com/api/webhooks/1518332304261644338/oSB0Va4IsPo3NHUNLBNIkkTl_Rv4NrTbvHaSkjtGwMfd_QcM4rO4kPoVJfrMoikOW9kU":
+        try:
+            requests.post(WEBHOOK_URL, json={"content": message})
+        except:
+            pass
 
-# Music URL setup
-MUSIC_URL = "https://raw.githubusercontent.com/Vertigosoftware/Abigail-/main/33019.mp3"
+# 2. Page Setup
+st.set_page_config(page_title="Terminal_Sotonye", page_icon="✨", layout="centered")
 
-# 2. Keep background music playing across all steps globally
-if 'audio_played' not in st.session_state:
-    st.markdown(f"""
-        <iframe src="{MUSIC_URL}" allow="autoplay" style="display:none;"></iframe>
-        <audio autoplay loop hidden>
-            <source src="{MUSIC_URL}" type="audio/mp3">
-        </audio>
-    """, unsafe_allow_html=True)
-    st.session_state.audio_played = True
-
-# 3. Custom CSS for the cyber-noir glowing aesthetic
+# 3. Cyber-Noir (Female Vibe) Custom CSS Styling
 st.markdown("""
     <style>
-    .stApp {
-        background-color: #0b0c10;
-        color: #c5c6c7;
-        font-family: 'Courier New', Courier, monospace;
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;600&display=swap');
+    
+    .main { 
+        background-color: #090d16; 
+        color: #f1f5f9; 
+        font-family: 'Space Grotesk', sans-serif;
     }
-    .cyber-header {
-        color: #66fcf1 !important;
-        text-shadow: 0 0 10px #66fcf1, 0 0 20px #66fcf1;
-        text-align: center;
-        font-size: 32px;
-    }
+    
+    /* Perfect Font Styling */
     .cyber-text {
-        color: #c5c6c7;
-        font-size: 16px;
-        text-align: center;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.25rem;
         line-height: 1.6;
-    }
-    .stButton>button {
-        background-color: #1f2833;
-        color: #66fcf1;
-        border: 2px solid #66fcf1;
-        box-shadow: 0 0 8px #66fcf1;
-        font-weight: bold;
-        border-radius: 5px;
-        width: 100%;
-        padding: 10px;
-    }
-    .stButton>button:hover {
-        background-color: #66fcf1;
-        color: #0b0c10;
-        box-shadow: 0 0 15px #66fcf1;
-    }
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 10px;
-        width: 100%;
+        color: #cbd5e1;
         text-align: center;
-        color: #45f3ff;
-        font-size: 12px;
-        letter-spacing: 1px;
+    }
+    
+    .cyber-header {
+        font-family: 'Share Tech Mono', monospace;
+        color: #38bdf8;
+        text-align: center;
+        text-shadow: 0px 0px 12px rgba(192, 132, 252, 0.5); /* Soft Purple Glow */
+        margin-bottom: 2rem;
+    }
+    
+    /* Tailwind Blue Color Bar Button */
+    .stButton>button { 
+        background-color: #0284c7; /* Tailwind blue-600 */
+        color: #ffffff;
+        border: none;
+        padding: 12px;
+        border-radius: 8px; 
+        width: 100%;
+        box-shadow: 0px 0px 15px rgba(56, 189, 248, 0.4);
+        transition: all 0.3s ease;
+    }
+    
+    .stButton>button:hover {
+        background-color: #0369a1;
+        box-shadow: 0px 0px 25px rgba(192, 132, 252, 0.7);
+        transform: scale(1.02);
     }
     </style>
-""", unsafe_html=True)
+""", unsafe_allow_html=True)
 
 # 4. App States Setup
 if "step" not in st.session_state:
@@ -85,35 +71,45 @@ if "step" not in st.session_state:
 if "no_clicks" not in st.session_state:
     st.session_state.no_clicks = 0
 
+# Persistent Music Component (Plays globally once she leaves Step 1)
+if st.session_state.step > 1:
+    st.markdown(f"""
+        <iframe src="{MUSIC_URL}" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
+        <audio autoplay loop hidden>
+            <source src="{MUSIC_URL}" type="audio/mp3">
+        </audio>
+    """, unsafe_allow_html=True)
+
 # --- PAGE 1: INTRO ---
 if st.session_state.step == 1:
     st.write("")
     st.markdown("<h2 class='cyber-header'>Hi Abigail, click the button below to continue</h2>", unsafe_allow_html=True)
     st.write("")
     
-    if st.button("⚡"):
+    # Solid Tailwind Blue button acting as a color-bar trigger
+    if st.button("⚡"): 
         st.session_state.step = 2
-        st.rerun()
+        st.html("<script>window.parent.location.reload();</script>")
 
-# --- PAGE 2: GRADUATION ---
+# --- PAGE 2: GRADUATION & MUSIC INITIALIZATION ---
 elif st.session_state.step == 2:
     st.write("")
     st.markdown("""
         <p class='cyber-text'>
-        Now that graduation is done, SS3 is dusted, and we're now going our separate ways, 
-        we definitely deserve to breathe some air. I made this quick interface for you...
+        Now that graduation is done, SS3 is dusted, and we're now going to the university, 
+        we definitely deserve to breathe some air. I made this quick interface to ask you something...
         </p>
     """, unsafe_allow_html=True)
     st.write("")
     
     if st.button("INITIALIZE MYSTERY DECRYPT"):
         st.session_state.step = 3
-        st.rerun()
+        st.html("<script>window.parent.location.reload();</script>")
 
 # --- PAGE 3: THE QUESTION ---
 elif st.session_state.step == 3:
     st.write("")
-    st.markdown("<h1 class='cyber-header'>Will you go on a date with me?</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='cyber-header'>Will you go on a date with me? ☕</h1>", unsafe_allow_html=True)
     st.write("")
     
     col1, col2 = st.columns(2)
@@ -122,43 +118,50 @@ elif st.session_state.step == 3:
         if st.button("YES! 🥳"):
             send_notification("🚨 NOTIFICATION: Sotonye clicked YES! 🎉")
             st.session_state.step = 4
-            st.rerun()
+            st.html("<script>window.parent.location.reload();</script>")
             
     with col2:
+        # Check how many times she has tried to press No
         if st.session_state.no_clicks < 3:
-            no_labels = ["NO 😢", "Are you sure? 🤨", "Wait, really? 💔"]
+            no_labels = ["NO 😢", "Are you sure? 🤨", "Wait, really? 😭"]
             current_label = no_labels[st.session_state.no_clicks]
             
             if st.button(current_label):
                 st.session_state.no_clicks += 1
-                st.rerun()
+                st.html("<script>window.parent.location.reload();</script>")
         else:
-            st.markdown("<p style='color:#ef4444; font-weight:bold; text-align:center;'>Access Denied. Selection locked.</p>", unsafe_allow_html=True)
+            # 3 Taps achieved: button behaves and locks down as text instruction
+            st.markdown("<p style='color:#ef4444; font-weight:bold; text-align:center;'>Are you sure? If not, click yes.</p>", unsafe_allow_html=True)
+            # Trigger notification on the 3rd click exactly once
             if st.session_state.no_clicks == 3:
-                send_notification("⚠️ NOTIFICATION: Sotonye clicked No 3 times.")
-                st.session_state.no_clicks = 4
+                send_notification("⚠️ NOTIFICATION: Sotonye clicked No 3 times. Locked out! 😉")
+                st.session_state.no_clicks = 4 # Prevents spamming webhook if she keeps hitting the text area
 
 # --- PAGE 4: SUCCESS WITH TYPING EFFECT ---
 elif st.session_state.step == 4:
-    st.balloons()
+    st.balloons() # Custom Streamlit animation pouring from the bottom
     st.write("")
     st.markdown("<h2 class='cyber-header'>// ACCESS GRANTED</h2>", unsafe_allow_html=True)
     
-    target_text = "Let's gooooo!. I'll lock in the final details with you later tonight. Stay tuned."
+    # Animated typing effect container
+    target_text = "Let's gooooo!. I'll lock in the final details with you later, get some rest."
     placeholder = st.empty()
     
+    # Simulates text magic typing effect
     displayed_text = ""
     for char in target_text:
         displayed_text += char
-        placeholder.markdown(f"<p class='cyber-text' style='font-size:1.5rem;'>{displayed_text}</p>", unsafe_allow_html=True)
+        placeholder.markdown(f"<p class='cyber-text' style='font-size:1.5rem; color:#fdf4ff;'>{displayed_text}█</p>", unsafe_allow_html=True)
         time.sleep(0.06)
         
-    placeholder.markdown(f"<p class='cyber-text' style='font-size:1.5rem;'>{target_text}</p>", unsafe_allow_html=True)
+    # Remove the cursor block symbol at the very end
+    placeholder.markdown(f"<p class='cyber-text' style='font-size:1.5rem; color:#fdf4ff;'>{target_text}</p>", unsafe_allow_html=True)
 
-# Footer Credits
-st.write("---")
+# --- FOOTER CREDITS ---
+st.write("---") # Adds a subtle divider line
 st.markdown("""
-    <p style='font-family: "Share Tech Mono", monospace; color: #64748b; text-align: center;'>
-    Copyright © 2026 | Code by Greatman (Vertigo Software)
+    <p style='font-family: "Share Tech Mono", monospace; color: #64748b; text-align: center; font-size: 0.85rem; letter-spacing: 1px;'>
+        Copyright © 2026 | Code by Greatman (Vertigo Software)
     </p>
 """, unsafe_allow_html=True)
+    

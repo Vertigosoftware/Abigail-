@@ -67,7 +67,7 @@ if "step" not in st.session_state:
 if "no_clicks" not in st.session_state:
     st.session_state.no_clicks = 0
 
-# Persistent Music Component (Plays across all pages once step 1 is done)
+# Persistent Music Component (Plays globally across pages once step 1 is left)
 if st.session_state.step > 1:
     st.markdown(f"""
         <iframe src="{MUSIC_URL}" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
@@ -84,22 +84,17 @@ if st.session_state.step == 1:
     
     if st.button("⚡"): 
         st.session_state.step = 2
-        st.write("Verifying access terminal... Click button once more.")
+        st.rerun()
 
 # --- PAGE 2: GRADUATION & MUSIC INITIALIZATION ---
 elif st.session_state.step == 2:
     st.write("")
-    st.markdown("""
-        <p class='cyber-text'>
-        Now that graduation is done, SS3 is dusted, and we're now going to the university, 
-        we definitely deserve to breathe some air. I made this quick interface to ask you something...
-        </p>
-    """, unsafe_allow_html=True)
+    st.markdown("""<p class='cyber-text'>Now that graduation is done, SS3 is dusted, and we're now going to the university, we definitely deserve to breathe some air. I made this quick interface to ask you something...</p>""", unsafe_allow_html=True)
     st.write("")
     
     if st.button("INITIALIZE MYSTERY DECRYPT"):
         st.session_state.step = 3
-        st.write("Decrypting interface modules... Click button once more.")
+        st.rerun()
 
 # --- PAGE 3: THE QUESTION ---
 elif st.session_state.step == 3:
@@ -113,7 +108,7 @@ elif st.session_state.step == 3:
         if st.button("YES! 🥳"):
             send_notification("🚨 NOTIFICATION: Sotonye clicked YES! 🎉")
             st.session_state.step = 4
-            st.write("Logging final parameters... Click button once more.")
+            st.rerun()
             
     with col2:
         if st.session_state.no_clicks < 3:
@@ -122,7 +117,7 @@ elif st.session_state.step == 3:
             
             if st.button(current_label):
                 st.session_state.no_clicks += 1
-                st.write("Registering state change... Click button once more.")
+                st.rerun()
         else:
             st.markdown("<p style='color:#ef4444; font-weight:bold; text-align:center;'>Are you sure? If not, click yes.</p>", unsafe_allow_html=True)
             if st.session_state.no_clicks == 3:

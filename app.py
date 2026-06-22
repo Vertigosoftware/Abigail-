@@ -70,7 +70,16 @@ if "step" not in st.session_state:
     st.session_state.step = 1
 if "no_clicks" not in st.session_state:
     st.session_state.no_clicks = 0
-
+# Keep background music playing across all steps
+if 'audio_played' not in st.session_state:
+    st.markdown(f"""
+        <iframe src="{MUSIC_URL}" allow="autoplay" style="display:none;"></iframe>
+        <audio autoplay loop hidden>
+            <source src="{MUSIC_URL}" type="audio/mp3">
+        </audio>
+    """, unsafe_allow_html=True)
+        st.session_state.audio_played = True
+    
 # --- PAGE 1: INTRO ---
 if st.session_state.step == 1:
     st.write("")
@@ -85,11 +94,7 @@ if st.session_state.step == 1:
 # --- PAGE 2: GRADUATION & MUSIC INITIALIZATION ---
 elif st.session_state.step == 2:
     # Option B Hidden HTML Tag: Plays because she interacted with Step 1
-    st.markdown(f"""
-        <iframe src="{MUSIC_URL}" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
-        <audio autoplay loop hidden>
-            <source src="{MUSIC_URL}" type="audio/mp3">
-        </audio>
+    
     """, unsafe_allow_html=True)
     
     st.write("")
@@ -163,3 +168,5 @@ st.markdown("""
         Copyright © 2026 | Code by Greatman (Vertigo Software)
     </p>
 """, unsafe_allow_html=True)
+    
+

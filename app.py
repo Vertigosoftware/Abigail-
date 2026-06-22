@@ -78,7 +78,7 @@ if 'audio_played' not in st.session_state:
             <source src="{MUSIC_URL}" type="audio/mp3">
         </audio>
     """, unsafe_allow_html=True)
-        st.session_state.audio_played = True
+    st.session_state.audio_played = True
     
 # --- PAGE 1: INTRO ---
 if st.session_state.step == 1:

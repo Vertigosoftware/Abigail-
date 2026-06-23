@@ -68,13 +68,13 @@ if "no_clicks" not in st.session_state:
 
 # Persistent Music Component (Plays globally across pages once step 1 is left)
 if st.session_state.step > 1:
-    st.markdown(f"""
-        <iframe src="{MUSIC_URL}" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
-        <audio autoplay loop hidden>
-            <source src="{MUSIC_URL}" type="audio/mp3">
-        </audio>
-    """, unsafe_allow_html=True)
-
+    try:
+        with open("33019.mp3", "rb") as f:
+            audio_bytes = f.read()
+        st.audio(audio_bytes, format="audio/mp3", autoplay=True, loop=True)
+    except Exception as e:
+        st.error("Audio file failed to load locally.")
+        
 # --- PAGE 1: INTRO ---
 if st.session_state.step == 1:
     st.write("")

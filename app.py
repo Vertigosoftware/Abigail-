@@ -4,7 +4,8 @@ import time
 
 # 1. WEBHOOK & MUSIC CONFIGURATION
 WEBHOOK_URL = "https://discord.com/api/webhooks/1518332304261644338/oSB0Va4IsPo3NHUNLBNIkkTl_Rv4NrTbvHaSkjtGwMfd_QcM4rO4kPoVJfrMoikOW9kU"
-MUSIC_URL = "https://github.com/Vertigosoftware/Abigail-/raw/refs/heads/main/33019.mp3"
+MUSIC_URL = "https://github.com/Vertigosoftware/Abigail-/raw/refs/heads/main/33019.mp3" 
+
 def send_notification(message):
     try:
         requests.post(WEBHOOK_URL, json={"content": message})
@@ -68,13 +69,13 @@ if "no_clicks" not in st.session_state:
 
 # Persistent Music Component (Plays globally across pages once step 1 is left)
 if st.session_state.step > 1:
-    try:
-        with open("33019.mp3", "rb") as f:
-            audio_bytes = f.read()
-        st.audio(audio_bytes, format="audio/mp3", autoplay=True, loop=True)
-    except Exception as e:
-        st.error("Audio file failed to load locally.")
-        
+    st.markdown(f"""
+        <iframe src="{MUSIC_URL}" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
+        <audio autoplay loop hidden>
+            <source src="{MUSIC_URL}" type="audio/mp3">
+        </audio>
+    """, unsafe_allow_html=True)
+
 # --- PAGE 1: INTRO ---
 if st.session_state.step == 1:
     st.write("")
@@ -147,3 +148,4 @@ st.markdown("""
         Copyright © 2026 | Code by Greatman (Vertigo Software)
     </p>
 """, unsafe_allow_html=True)
+    

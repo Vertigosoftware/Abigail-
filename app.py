@@ -4,7 +4,7 @@ import time
 
 # 1. WEBHOOK & MUSIC CONFIGURATION
 WEBHOOK_URL = "https://discord.com/api/webhooks/1518332304261644338/oSB0Va4IsPo3NHUNLBNIkkTl_Rv4NrTbvHaSkjtGwMfd_QcM4rO4kPoVJfrMoikOW9kU"
-MUSIC_URL = "https://github.com/Vertigosoftware/Abigail-/raw/refs/heads/main/33019.mp3" 
+MUSIC_URL = "https://cdn.discordapp.com/attachments/1518331325705097310/1518964457861156964/33019_2.mp3?ex=6a3bd563&is=6a3a83e3&hm=c494559e4f8a10f052288ff894a0ba0eb7f380692b048b0aa9e860744b2b66e0&file=.mp3" 
 
 def send_notification(message):
     try:

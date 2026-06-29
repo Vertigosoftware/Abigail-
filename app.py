@@ -20,9 +20,9 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Grotesk:wght@400;600&display=swap');
     
-    .main { 
-        background-color: #090d16; 
-        color: #f1f5f9; 
+        .main, .stApp, [data-testid="stAppViewContainer"] {
+        background-color: #090d16 !important;
+        color: #f1f5f9 !important;
         font-family: 'Space Grotesk', sans-serif;
     }
     
